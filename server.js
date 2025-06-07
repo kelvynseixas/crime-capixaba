@@ -50,3 +50,15 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
+app.post('/webhook', (req, res) => {
+    const exec = require('child_process').exec;
+    exec('./deploy.sh', (err, stdout, stderr) => {
+        if (err) {
+            console.error(`❌ Erro: ${stderr}`);
+            res.status(500).send('Erro no deploy');
+            return;
+        }
+        console.log(`✅ Saída: ${stdout}`);
+        res.send('Deploy feito com sucesso!');
+    });
+});
