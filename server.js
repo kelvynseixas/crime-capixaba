@@ -1,12 +1,13 @@
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
-
 const express = require('express');
+const bodyParser = require('body-parser');
 const http = require('http');
 const { Server } = require('socket.io');
 const path = require('path');
 
 const app = express();
+
+app.use(bodyParser.json());
+
 const server = http.createServer(app);
 const io = new Server(server);
 
@@ -45,20 +46,22 @@ io.on('connection', (socket) => {
   });
 });
 
+// Endpoint para webhook de deploy
+app.post('/webhook', (req, res) => {
+  const exec = require('child_process').exec;
+  exec('./deploy.sh', (err, stdout, stderr) => {
+    if (err) {
+      console.error(`❌ Erro: ${stderr}`);
+      res.status(500).send('Erro no deploy');
+      return;
+    }
+    console.log(`✅ Saída: ${stdout}`);
+    res.send('Deploy feito com sucesso!');
+  });
+});
+
 // Inicia servidor
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
-});
-app.post('/webhook', (req, res) => {
-    const exec = require('child_process').exec;
-    exec('./deploy.sh', (err, stdout, stderr) => {
-        if (err) {
-            console.error(`❌ Erro: ${stderr}`);
-            res.status(500).send('Erro no deploy');
-            return;
-        }
-        console.log(`✅ Saída: ${stdout}`);
-        res.send('Deploy feito com sucesso!');
-    });
 });
