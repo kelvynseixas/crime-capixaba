@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Crime Capixaba – Jogo</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h2>Sala: <span id="salaAtual">---</span></h2>
+  <h3>Jogador: <span id="nomeJogador">---</span></h3>
+
+  <section>
+    <h3>Checklist de Dedução</h3>
+    <div class="checklist">
+      <div>
+        <h4>Suspeitos</h4>
+        <ul id="check-suspeitos">
+          <!-- checkboxes adicionados via JS -->
+        </ul>
+      </div>
+      <div>
+        <h4>Lugares</h4>
+        <ul id="check-lugares">
+          <!-- checkboxes adicionados via JS -->
+        </ul>
+      </div>
+      <div>
+        <h4>Armas</h4>
+        <ul id="check-armas">
+          <!-- checkboxes adicionados via JS -->
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Fazer Acusação</h3>
+    <form id="acusacaoForm">
+      <label>Suspeito:</label><br>
+      <select id="acusacaoSuspeito"></select><br>
+      <label>Local:</label><br>
+      <select id="acusacaoLocal"></select><br>
+      <label>Arma:</label><br>
+      <select id="acusacaoArma"></select><br>
+      <button type="submit">Acusar</button>
+    </form>
+  </section>
+
+  <div id="mensagem"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
