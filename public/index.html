@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Crime Capixaba</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Crime Capixaba</h1>
+  <input id="nome" placeholder="Seu nome">
+  <input id="sala" placeholder="Sala">
+  <button onclick="entrar()">Entrar</button>
+
+  <ul id="jogadores"></ul>
+  <button onclick="enviarJogada()">Enviar Jogada</button>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
