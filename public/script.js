@@ -28,3 +28,13 @@ socket.on('dadoRolado', ({ jogador, resultado }) => {
 socket.on('boasVindas', (msg) => {
   alert(msg);
 });
+function entrar() {
+  const nome = document.getElementById('nomeJogador').value.trim();
+  const sala = document.getElementById('sala').value.trim();
+
+  if (nome && sala) {
+    window.location.href = `/game.html?nome=${encodeURIComponent(nome)}&sala=${encodeURIComponent(sala)}`;
+  } else {
+    alert("Preencha o nome e a sala para continuar.");
+  }
+}
