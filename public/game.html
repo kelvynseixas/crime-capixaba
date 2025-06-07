@@ -2,58 +2,74 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Crime Capixaba – Jogo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crime Capixaba</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h2>Sala: <span id="salaAtual">---</span></h2>
-  <h3>Jogador: <span id="nomeJogador">---</span></h3>
+  <header>
+    <h1>Crime Capixaba</h1>
+    <p>Bem-vindo(a) ao jogo de detetive em Vitória, ES</p>
+  </header>
 
-  <section>
-    <h3>Checklist de Dedução</h3>
-    <div class="checklist">
-      <div>
-        <h4>Suspeitos</h4>
-        <ul id="check-suspeitos">
-          <!-- checkboxes adicionados via JS -->
-        </ul>
-      </div>
-      <div>
-        <h4>Lugares</h4>
-        <ul id="check-lugares">
-          <!-- checkboxes adicionados via JS -->
-        </ul>
-      </div>
-      <div>
-        <h4>Armas</h4>
-        <ul id="check-armas">
-          <!-- checkboxes adicionados via JS -->
-        </ul>
-      </div>
-    </div>
-  </section>
+  <main>
+    <!-- Nome do Jogador -->
+    <section>
+      <label for="nomeJogador">Seu nome:</label>
+      <input type="text" id="nomeJogador" placeholder="Digite seu nome" />
+    </section>
 
-  <section>
-    <h3>Fazer Acusação</h3>
-    <form id="acusacaoForm">
-      <label>Suspeito:</label><br>
-      <select id="acusacaoSuspeito"></select><br>
-      <label>Local:</label><br>
-      <select id="acusacaoLocal"></select><br>
-      <label>Arma:</label><br>
-      <select id="acusacaoArma"></select><br>
-      <button type="submit">Acusar</button>
-    </form>
-  </section>
+    <!-- Painel de Anotações -->
+    <section id="painel">
+      <h2>Painel de Anotações</h2>
 
-  <div id="mensagem"></div>
-<section id="tabuleiro">
-  <h3>Tabuleiro</h3>
-  <canvas id="canvasMapa" width="600" height="600" style="border:1px solid #000;"></canvas>
-  <br />
-  <button id="rolarDado">🎲 Rolar Dado</button>
-  <p id="resultadoDado"></p>
-</section>
+      <div class="painel-coluna">
+        <h3>Suspeitos</h3>
+        <label><input type="checkbox" /> Chef Zé Moqueca</label>
+        <label><input type="checkbox" /> Luna, a Hippie da UFES</label>
+        <label><input type="checkbox" /> Cadu, Artesão da Praça</label>
+        <label><input type="checkbox" /> Bia Banhista</label>
+        <label><input type="checkbox" /> Seu 7, o Velho da Rua</label>
+        <label><input type="checkbox" /> Dandara do Samba</label>
+      </div>
+
+      <div class="painel-coluna">
+        <h3>Locais</h3>
+        <label><input type="checkbox" /> Ilha das Caieiras</label>
+        <label><input type="checkbox" /> UFES</label>
+        <label><input type="checkbox" /> Praça dos Namorados</label>
+        <label><input type="checkbox" /> Curva da Jurema</label>
+        <label><input type="checkbox" /> Rua 7, Centro</label>
+        <label><input type="checkbox" /> Sabão do Povo</label>
+        <label><input type="checkbox" /> Shopping Vitória</label>
+        <label><input type="checkbox" /> Aquaviário</label>
+        <label><input type="checkbox" /> Aeroporto</label>
+      </div>
+
+      <div class="painel-coluna">
+        <h3>Armas</h3>
+        <label><input type="checkbox" /> Moqueca envenenada</label>
+        <label><input type="checkbox" /> Caderno ensanguentado</label>
+        <label><input type="checkbox" /> Barra de ferro</label>
+        <label><input type="checkbox" /> Canga de praia</label>
+        <label><input type="checkbox" /> Cadeira de bar</label>
+        <label><input type="checkbox" /> Pandeiro</label>
+      </div>
+    </section>
+
+    <!-- Tabuleiro -->
+    <section id="tabuleiro">
+      <h2>Tabuleiro</h2>
+      <canvas id="canvasMapa" width="600" height="600"></canvas>
+      <br />
+      <button id="rolarDado">🎲 Rolar Dado</button>
+      <p id="resultadoDado"></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Desenvolvido por +Além, Branding & Design</p>
+  </footer>
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="script.js"></script>
