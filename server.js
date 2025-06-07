@@ -1,67 +1,65 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const http = require('http');
 const { Server } = require('socket.io');
 const path = require('path');
+const { exec } = require('child_process');
 
 const app = express();
-
-app.use(bodyParser.json());
-
 const server = http.createServer(app);
 const io = new Server(server);
 
 const jogadores = {};
 
-app.use(express.static(path.join(__dirname, 'public'))); // pasta com index.html, style.css, script.js
+// Middleware para JSON (substitui body-parser)
+app.use(express.json());
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Rota principal
-app.get('/', (req, res) => {
+app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-io.on('connection', (socket) => {
-  console.log(`Novo jogador conectado: ${socket.id}`);
+io.on('connection', function (socket) {
+  console.log('Novo jogador conectado: ' + socket.id);
 
-  // Quando jogador envia o nome
-  socket.on('novoJogador', (nome) => {
+  socket.on('novoJogador', function (nome) {
     jogadores[socket.id] = nome;
-    console.log(`Jogador registrado: ${nome}`);
-    socket.emit('boasVindas', `Bem-vindo, ${nome}!`);
-    socket.broadcast.emit('mensagem', `${nome} entrou na sala.`);
+    console.log('Jogador registrado: ' + nome);
+    socket.emit('boasVindas', 'Bem-vindo, ' + nome + '!');
+    socket.broadcast.emit('mensagem', nome + ' entrou na sala.');
   });
 
-  // Dado rolado
-  socket.on('dadoRolado', ({ resultado }) => {
+  socket.on('dadoRolado', function (data) {
     const nome = jogadores[socket.id] || 'Jogador desconhecido';
-    socket.broadcast.emit('dadoRolado', { jogador: nome, resultado });
+    socket.broadcast.emit('dadoRolado', {
+      jogador: nome,
+      resultado: data.resultado
+    });
   });
 
-  // Quando jogador desconecta
-  socket.on('disconnect', () => {
+  socket.on('disconnect', function () {
     const nome = jogadores[socket.id];
     delete jogadores[socket.id];
-    console.log(`Jogador saiu: ${nome}`);
-    socket.broadcast.emit('mensagem', `${nome || 'Um jogador'} saiu do jogo.`);
+    console.log('Jogador saiu: ' + nome);
+    socket.broadcast.emit('mensagem', (nome || 'Um jogador') + ' saiu do jogo.');
   });
 });
 
-// Endpoint para webhook de deploy
-app.post('/webhook', (req, res) => {
-  const exec = require('child_process').exec;
-  exec('./deploy.sh', (err, stdout, stderr) => {
+// Webhook de deploy
+app.post('/webhook', function (req, res) {
+  exec('./deploy.sh', function (err, stdout, stderr) {
     if (err) {
-      console.error(`❌ Erro: ${stderr}`);
+      console.error('❌ Erro: ' + stderr);
       res.status(500).send('Erro no deploy');
       return;
     }
-    console.log(`✅ Saída: ${stdout}`);
+    console.log('✅ Saída: ' + stdout);
     res.send('Deploy feito com sucesso!');
   });
 });
 
-// Inicia servidor
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+server.listen(PORT, function () {
+  console.log('Servidor rodando em http://localhost:' + PORT);
 });
