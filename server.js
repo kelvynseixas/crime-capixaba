@@ -1,36 +1,49 @@
 const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
+const path = require('path');
+
 const app = express();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+const server = http.createServer(app);
+const io = new Server(server);
 
-app.use(express.static('public'));
+const jogadores = {};
 
-const PORT = 3000;
-http.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+app.use(express.static(path.join(__dirname, 'public'))); // pasta com index.html, style.css, script.js
+
+// Rota principal
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-let salas = {};
-
 io.on('connection', (socket) => {
-  console.log('Novo jogador conectado');
+  console.log(`Novo jogador conectado: ${socket.id}`);
 
-  socket.on('entrarNaSala', ({ nome, sala }) => {
-    socket.join(sala);
-    if (!salas[sala]) salas[sala] = [];
-    salas[sala].push({ id: socket.id, nome });
-
-    io.to(sala).emit('atualizarJogadores', salas[sala]);
+  // Quando jogador envia o nome
+  socket.on('novoJogador', (nome) => {
+    jogadores[socket.id] = nome;
+    console.log(`Jogador registrado: ${nome}`);
+    socket.emit('boasVindas', `Bem-vindo, ${nome}!`);
+    socket.broadcast.emit('mensagem', `${nome} entrou na sala.`);
   });
 
-  socket.on('jogada', ({ sala, jogada }) => {
-    socket.to(sala).emit('jogadaRecebida', jogada);
+  // Dado rolado
+  socket.on('dadoRolado', ({ resultado }) => {
+    const nome = jogadores[socket.id] || 'Jogador desconhecido';
+    socket.broadcast.emit('dadoRolado', { jogador: nome, resultado });
   });
 
+  // Quando jogador desconecta
   socket.on('disconnect', () => {
-    for (let sala in salas) {
-      salas[sala] = salas[sala].filter(j => j.id !== socket.id);
-      io.to(sala).emit('atualizarJogadores', salas[sala]);
-    }
+    const nome = jogadores[socket.id];
+    delete jogadores[socket.id];
+    console.log(`Jogador saiu: ${nome}`);
+    socket.broadcast.emit('mensagem', `${nome || 'Um jogador'} saiu do jogo.`);
   });
+});
+
+// Inicia servidor
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
