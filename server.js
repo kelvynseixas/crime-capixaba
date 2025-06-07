@@ -1,3 +1,6 @@
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
