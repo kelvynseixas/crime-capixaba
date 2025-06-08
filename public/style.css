@@ -1,40 +1,123 @@
-/* style.css */
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f7f7f7;
+  color: #333;
   padding: 20px;
-  background-color: #fefefe;
 }
-h1 {
+
+h1, h2, h3 {
+  color: #222;
+  margin-bottom: 10px;
+}
+
+header, footer {
   text-align: center;
-  color: #b30000;
+  margin-bottom: 20px;
 }
+
+footer {
+  margin-top: 40px;
+  font-size: 0.9em;
+  color: #777;
+}
+
+/* Formulário de entrada */
+.formulario {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.formulario label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.formulario input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.formulario button {
+  width: 100%;
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.formulario button:hover {
+  background: #0056b3;
+}
+
+/* Painel de Anotações */
 #painel {
   display: flex;
   gap: 20px;
-  margin-bottom: 20px;
+  margin: 20px 0;
+  flex-wrap: wrap;
 }
+
 .painel-coluna {
+  background: #fff;
+  border-radius: 10px;
+  padding: 15px;
   flex: 1;
-  background: #f2f2f2;
-  padding: 10px;
-  border-radius: 8px;
+  min-width: 200px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
 }
+
+.painel-coluna h3 {
+  margin-bottom: 10px;
+}
+
+/* Tabuleiro */
 #tabuleiro {
+  margin-top: 30px;
   text-align: center;
 }
-canvas {
-  border: 2px solid #ccc;
+
+#canvasMapa {
+  border: 2px solid #333;
+  border-radius: 10px;
+  background-color: #e4e4e4;
 }
 
-#controlesMovimento {
+/* Jogadores no canvas */
+.jogador {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* Resultado do dado */
+#resultadoDado {
+  font-size: 1.2em;
   margin-top: 10px;
-  text-align: center;
 }
 
-#controlesMovimento button {
-  width: 40px;
-  height: 40px;
-  font-size: 20px;
-  margin: 2px;
-  cursor: pointer;
+/* Responsivo */
+@media (max-width: 768px) {
+  #painel {
+    flex-direction: column;
+  }
+
+  .formulario {
+    margin: 10px;
+  }
 }
