@@ -106,6 +106,14 @@ function mover(direcao) {
       if (jogador.x < 9) jogador.x++;
       break;
   }
+  const personagensFixos = [
+  { nome: "Chef Zé Moqueca", cor: "red", x: 0, y: 9 },
+  { nome: "Luna, a Hippie da UFES", cor: "green", x: 2, y: 2 },
+  { nome: "Cadu, Artesão da Praça", cor: "purple", x: 5, y: 5 },
+  { nome: "Bia Banhista", cor: "orange", x: 9, y: 1 },
+  { nome: "Seu 7, o Velho da Rua", cor: "brown", x: 4, y: 8 },
+  { nome: "Dandara do Samba", cor: "pink", x: 8, y: 3 }
+];
 
   jogador.movimentosRestantes--;
   document.getElementById('resultadoDado').textContent = `Movimentos restantes: ${jogador.movimentosRestantes}`;
