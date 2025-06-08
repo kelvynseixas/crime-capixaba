@@ -1,40 +1,43 @@
-// Conecta ao servidor Socket.IO
+/* script.js */
 const socket = io();
 
-// Lida com envio do nome do jogador
-document.getElementById('nomeJogador').addEventListener('change', () => {
-  const nome = document.getElementById('nomeJogador').value.trim();
-  if (nome !== '') {
-    socket.emit('novoJogador', nome);
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const nome = params.get('nome');
+  const sala = params.get('sala');
+  if (nome) {
+    const inputNome = document.getElementById('nomeJogador');
+    if (inputNome) inputNome.value = nome;
+    socket.emit('novoJogador', { nome, sala });
   }
 });
 
-// Lógica do botão de rolar o dado
-document.getElementById('rolarDado').addEventListener('click', () => {
+document.getElementById('rolarDado')?.addEventListener('click', () => {
   const resultado = Math.floor(Math.random() * 6) + 1;
   document.getElementById('resultadoDado').textContent = `Você tirou: ${resultado}`;
-
-  // (opcional) emitir para outros jogadores no futuro
   socket.emit('dadoRolado', { resultado });
 });
 
-// Listener para quando outro jogador rolar o dado
 socket.on('dadoRolado', ({ jogador, resultado }) => {
-  console.log(`${jogador} tirou: ${resultado}`);
-  // Aqui podemos futuramente mostrar em uma área de log do jogo
+  alert(`${jogador} tirou: ${resultado}`);
 });
 
-// Listener para mensagens iniciais do servidor
 socket.on('boasVindas', (msg) => {
   alert(msg);
 });
-function entrar() {
-  const nome = document.getElementById('nomeJogador').value.trim();
-  const sala = document.getElementById('sala').value.trim();
 
-  if (nome && sala) {
-    window.location.href = `/game.html?nome=${encodeURIComponent(nome)}&sala=${encodeURIComponent(sala)}`;
-  } else {
-    alert("Preencha o nome e a sala para continuar.");
-  }
+function enviarJogada() {
+  alert("Essa função ainda será implementada.");
+}
+
+// Exemplo de desenho simples no canvas
+const canvas = document.getElementById('canvasMapa');
+if (canvas) {
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#f0f0f0';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = 'red';
+  ctx.beginPath();
+  ctx.arc(300, 300, 10, 0, Math.PI * 2);
+  ctx.fill();
 }
