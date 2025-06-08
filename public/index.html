@@ -1,27 +1,48 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Crime Capixaba</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Entrar no Crime Capixaba</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Crime Capixaba</h1>
-  <input id="nome" placeholder="Seu nome">
-  <input id="sala" placeholder="Sala">
-  <button onclick="entrar()">Entrar</button>
+  <header>
+    <h1>Crime Capixaba</h1>
+    <p>Junte-se à investigação em Vitória, ES</p>
+  </header>
+
+  <main>
+    <section class="formulario">
+      <h2>Entrar no jogo</h2>
+      <form id="formEntrar">
+        <label for="nome">Seu nome:</label>
+        <input type="text" id="nome" required placeholder="Ex: João" />
+
+        <label for="sala">Nome da sala:</label>
+        <input type="text" id="sala" required placeholder="Ex: sala1" />
+
+        <button type="submit">Entrar</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>Desenvolvido por +Além, Branding & Design</p>
+  </footer>
 
   <script>
-    function entrar() {
-      const nome = document.getElementById('nome').value.trim();
-      const sala = document.getElementById('sala').value.trim();
+    const form = document.getElementById("formEntrar");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const nome = document.getElementById("nome").value.trim();
+      const sala = document.getElementById("sala").value.trim();
+
       if (nome && sala) {
-        window.location.href = `/game.html?nome=${encodeURIComponent(nome)}&sala=${encodeURIComponent(sala)}`;
-      } else {
-        alert("Preencha o nome e a sala para continuar.");
+        window.location.href = `game.html?nome=${encodeURIComponent(nome)}&sala=${encodeURIComponent(sala)}`;
       }
-    }
+    });
   </script>
 </body>
 </html>
