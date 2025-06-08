@@ -1,9 +1,8 @@
-<!-- game.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Crime Capixaba</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -15,14 +14,13 @@
 
   <main>
     <!-- Nome do Jogador -->
-    <section>
+    <section class="formulario">
       <label for="nomeJogador">Seu nome:</label>
-      <input type="text" id="nomeJogador" placeholder="Digite seu nome" readonly />
+      <input type="text" id="nomeJogador" placeholder="Digite seu nome" />
     </section>
 
     <!-- Painel de Anotações -->
     <section id="painel">
-      <h2>Painel de Anotações</h2>
       <div class="painel-coluna">
         <h3>Suspeitos</h3>
         <label><input type="checkbox" /> Chef Zé Moqueca</label>
@@ -62,13 +60,6 @@
       <h2>Tabuleiro</h2>
       <canvas id="canvasMapa" width="600" height="600"></canvas>
       <br />
-      <div id="controlesMovimento">
-        <button onclick="mover('cima')">↑</button><br>
-        <button onclick="mover('esquerda')">←</button>
-        <button onclick="mover('baixo')">↓</button>
-        <button onclick="mover('direita')">→</button>
-      </div>
-
       <button id="rolarDado">🎲 Rolar Dado</button>
       <p id="resultadoDado"></p>
     </section>
