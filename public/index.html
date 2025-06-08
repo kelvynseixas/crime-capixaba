@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,14 +8,20 @@
 </head>
 <body>
   <h1>Crime Capixaba</h1>
-  <input id="nomeJogador" placeholder="Seu nome">
+  <input id="nome" placeholder="Seu nome">
   <input id="sala" placeholder="Sala">
   <button onclick="entrar()">Entrar</button>
 
-  <ul id="jogadores"></ul>
-  <button onclick="enviarJogada()">Enviar Jogada</button>
-
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="script.js"></script>
+  <script>
+    function entrar() {
+      const nome = document.getElementById('nome').value.trim();
+      const sala = document.getElementById('sala').value.trim();
+      if (nome && sala) {
+        window.location.href = `/game.html?nome=${encodeURIComponent(nome)}&sala=${encodeURIComponent(sala)}`;
+      } else {
+        alert("Preencha o nome e a sala para continuar.");
+      }
+    }
+  </script>
 </body>
 </html>
