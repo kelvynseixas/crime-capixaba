@@ -41,3 +41,73 @@ if (canvas) {
   ctx.arc(300, 300, 10, 0, Math.PI * 2);
   ctx.fill();
 }
+
+const canvas = document.getElementById('canvasMapa');
+const ctx = canvas.getContext('2d');
+
+// Cada jogador começa no canto inferior esquerdo
+let jogador = {
+  nome: new URLSearchParams(window.location.search).get("nome") || "Você",
+  x: 0,
+  y: 9,
+  movimentosRestantes: 0
+};
+
+// Tamanho da "casa" do tabuleiro (grid 10x10)
+const TAM = 60;
+
+function desenharTabuleiro() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Grade do tabuleiro
+  ctx.strokeStyle = "#ccc";
+  for (let i = 0; i <= 10; i++) {
+    ctx.beginPath();
+    ctx.moveTo(i * TAM, 0);
+    ctx.lineTo(i * TAM, canvas.height);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(0, i * TAM);
+    ctx.lineTo(canvas.width, i * TAM);
+    ctx.stroke();
+  }
+
+  // Desenha o jogador
+  ctx.fillStyle = "blue";
+  ctx.fillRect(jogador.x * TAM + 10, jogador.y * TAM + 10, TAM - 20, TAM - 20);
+}
+
+// Inicializa o canvas
+desenharTabuleiro();
+
+// Substitui botão de rolar dado
+document.getElementById('rolarDado').addEventListener('click', () => {
+  const resultado = Math.floor(Math.random() * 6) + 1;
+  jogador.movimentosRestantes = resultado;
+  document.getElementById('resultadoDado').textContent = `Você tirou: ${resultado}. Movimentos restantes: ${resultado}`;
+});
+
+// Mover o jogador no grid
+function mover(direcao) {
+  if (jogador.movimentosRestantes <= 0) return;
+
+  switch (direcao) {
+    case 'cima':
+      if (jogador.y > 0) jogador.y--;
+      break;
+    case 'baixo':
+      if (jogador.y < 9) jogador.y++;
+      break;
+    case 'esquerda':
+      if (jogador.x > 0) jogador.x--;
+      break;
+    case 'direita':
+      if (jogador.x < 9) jogador.x++;
+      break;
+  }
+
+  jogador.movimentosRestantes--;
+  document.getElementById('resultadoDado').textContent = `Movimentos restantes: ${jogador.movimentosRestantes}`;
+  desenharTabuleiro();
+}
