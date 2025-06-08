@@ -1,65 +1,35 @@
 const express = require('express');
-const http = require('http');
-const { Server } = require('socket.io');
-const path = require('path');
-const { exec } = require('child_process');
-
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server);
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 
-const jogadores = {};
+const PORT = process.env.PORT || 3000;
 
-// Middleware para JSON (substitui body-parser)
-app.use(express.json());
+// Serve os arquivos da pasta public
+app.use(express.static('public'));
 
-app.use(express.static(path.join(__dirname, 'public')));
+io.on('connection', (socket) => {
+  console.log('Um jogador se conectou:', socket.id);
 
-// Rota principal
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-io.on('connection', function (socket) {
-  console.log('Novo jogador conectado: ' + socket.id);
-
-  socket.on('novoJogador', function (nome) {
-    jogadores[socket.id] = nome;
-    console.log('Jogador registrado: ' + nome);
-    socket.emit('boasVindas', 'Bem-vindo, ' + nome + '!');
-    socket.broadcast.emit('mensagem', nome + ' entrou na sala.');
+  socket.on('novoJogador', (nome) => {
+    console.log(`Jogador entrou: ${nome}`);
+    socket.emit('boasVindas', `Bem-vindo(a) ao Crime Capixaba, ${nome}!`);
   });
 
-  socket.on('dadoRolado', function (data) {
-    const nome = jogadores[socket.id] || 'Jogador desconhecido';
+  socket.on('dadoRolado', ({ resultado }) => {
+    console.log(`Dado rolado: ${resultado}`);
+    // Aqui você pode emitir para todos, ou para uma sala específica
     socket.broadcast.emit('dadoRolado', {
-      jogador: nome,
-      resultado: data.resultado
+      jogador: socket.id,
+      resultado
     });
   });
 
-  socket.on('disconnect', function () {
-    const nome = jogadores[socket.id];
-    delete jogadores[socket.id];
-    console.log('Jogador saiu: ' + nome);
-    socket.broadcast.emit('mensagem', (nome || 'Um jogador') + ' saiu do jogo.');
+  socket.on('disconnect', () => {
+    console.log('Um jogador se desconectou:', socket.id);
   });
 });
 
-// Webhook de deploy
-app.post('/webhook', function (req, res) {
-  exec('./deploy.sh', function (err, stdout, stderr) {
-    if (err) {
-      console.error('❌ Erro: ' + stderr);
-      res.status(500).send('Erro no deploy');
-      return;
-    }
-    console.log('✅ Saída: ' + stdout);
-    res.send('Deploy feito com sucesso!');
-  });
-});
-
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, function () {
-  console.log('Servidor rodando em http://localhost:' + PORT);
+http.listen(PORT, () => {
+  console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
