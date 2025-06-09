@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crime Capixaba</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="login-screen">
+        <h1>Crime Capixaba</h1>
+        <input type="text" id="playerName" placeholder="Seu nome de detetive">
+        <input type="text" id="gameIdInput" placeholder="ID do Jogo (deixe em branco para criar)">
+        <button id="joinGameBtn">Entrar ou Criar Jogo</button>
+        <p id="error-message" class="error"></p>
+    </div>
+
+    <div id="game-screen" class="hidden">
+        <header>
+            <h1>Crime Capixaba - <span id="gameIdDisplay"></span></h1>
+            <h2 id="turn-info">Aguardando jogadores...</h2>
+        </header>
+
+        <main class="game-layout">
+            <div id="board-container">
+                <h3>Locais da Grande Vitória</h3>
+                <div id="board">
+                    </div>
+            </div>
+
+            <div id="player-dashboard">
+                <div id="my-cards-container">
+                    <h3>Minhas Cartas</h3>
+                    <div id="my-cards"></div>
+                </div>
+
+                <div id="controls-container">
+                    <h3>Ações</h3>
+                    <div id="controls">
+                        <button id="startGameBtn" class="hidden">Iniciar Jogo</button>
+                        <button id="moveBtn" disabled>Mover</button>
+                        <button id="suggestBtn" disabled>Dar Palpite</button>
+                        <button id="accuseBtn">Fazer Acusação Final</button>
+                        <button id="endTurnBtn" disabled>Terminar Turno</button>
+                    </div>
+                </div>
+
+                <div id="log-container">
+                    <h3>Registro de Eventos</h3>
+                    <div id="log"></div>
+                </div>
+            </div>
+        </main>
+
+        <aside id="notebook-container">
+            <h3>Bloco de Anotações</h3>
+            <div id="notebook"></div>
+        </aside>
+    </div>
+    
+    <div id="modal-backdrop" class="hidden"></div>
+    <div id="suggestion-modal" class="modal hidden">
+        <h4>Fazer um Palpite</h4>
+        <p>Você está em: <strong id="suggestion-location"></strong></p>
+        <label>Suspeito:</label>
+        <select id="suggestion-suspect"></select>
+        <label>Arma:</label>
+        <select id="suggestion-weapon"></select>
+        <div>
+            <button id="submitSuggestionBtn">Sugerir</button>
+            <button class="close-modal-btn">Cancelar</button>
+        </div>
+    </div>
+    <div id="disprove-modal" class="modal hidden">
+        <h4>Refutar Palpite</h4>
+        <p id="disprove-text"></p>
+        <div id="disprove-cards"></div>
+        <button class="close-modal-btn">Fechar</button>
+    </div>
+    <div id="accusation-modal" class="modal hidden">
+        <h4>Fazer Acusação Final!</h4>
+        <p>Esta ação é definitiva. Se errar, você perde.</p>
+        <label>Suspeito:</label>
+        <select id="accusation-suspect"></select>
+        <label>Arma:</label>
+        <select id="accusation-weapon"></select>
+        <label>Local:</label>
+        <select id="accusation-location"></select>
+        <div>
+            <button id="submitAccusationBtn">ACUSAR!</button>
+            <button class="close-modal-btn">Cancelar</button>
+        </div>
+    </div>
+    <div id="game-over-modal" class="modal hidden">
+        <h2 id="game-over-title"></h2>
+        <p id="game-over-text"></p>
+        <button onclick="window.location.reload()">Jogar Novamente</button>
+    </div>
+
+
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
