@@ -49,7 +49,7 @@ joinGameBtn.addEventListener('click', () => {
     errorMessage.textContent = '';
     
     // ATENÇÃO: Substitua 'http://localhost:3000' pelo IP da sua VPS quando for para produção
-    socket = io("http://localhost:3000"); 
+    socket = io("http://157.180.81.252:3000"); 
     setupSocketListeners();
 
     if (gameId) {
